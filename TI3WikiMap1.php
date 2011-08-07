@@ -132,7 +132,10 @@ class ExtTI3WikiMapFunctions
 							,'GF' => '0'
 							,'ST' => '0'
 							,'PDS' => '0'
-
+              
+              ,'Artifact' => ''
+              ,'DS' => ''
+              
 							,'Tile' => 'Empty'
 							,'Label' => ''
 							,'Format' => 'gif'
@@ -366,7 +369,7 @@ class ExtTI3WikiMapFunctions
 
 	private function valid_string($str)
 	{
-		return !preg_match('/[^a-zA-Z0-9\:\/\.\-\_\ \Ä\ä\Ö\ö\Ü\ü\
+		return !preg_match('/[^a-zA-Z0-9\:\/\.\-\_\ \Ã„\Ã¤\Ã–\Ã¶\Ãœ\Ã¼\
    ]+$/s',$str);
 	}
 	private function _parseNamedArguments($argArray, $defaultArg = 'Default')
@@ -464,6 +467,7 @@ class ExtTI3WikiMapFunctions
 	
 	private function _GetPlanetLeftTop()
 	{
+		$Where = $this->args['Where'];
 		$Planet = $this->args['Planet'];
 		
 		// If a planet value was specified
@@ -566,6 +570,7 @@ class ExtTI3WikiMapFunctions
 		$PX = $this->Left;
 		$PY = $this->Top;
 		
+    $retv = '';
 		$tokenCount = 0;
 		
 		$ShowRace = $Race != '';
@@ -613,7 +618,7 @@ class ExtTI3WikiMapFunctions
 			$Left = $PX - self::$planetRadius;
 			$Top = $PY - self::$planetRadius;
 			
-			$retv .= $this->_mapUnitHTML('Spacedock', 1, false, $Color, '', $Left, $Top, $Scale, $Format);
+			$retv = $this->_mapUnitHTML('Spacedock', 1, false, $Color, '', $Left, $Top, $Scale, $Format);
 			if($Fighters > 0)
 			{
 				$Left -= 20;
@@ -641,7 +646,7 @@ class ExtTI3WikiMapFunctions
 			$Top = $PY + self::$planetRadius;
 			
 			$retv .= $this->_mapUnitHTML('PDS', 1, false, $Color, '', $Left, $Top, $Scale, $Format);
-			$unitIDX+=2;
+			//$unitIDX+=2;
 		}
 		
 		
@@ -673,7 +678,7 @@ class ExtTI3WikiMapFunctions
 		if(strlen($Link) > 0)
 			$Content = "<span class=\"plainlinks\">[{{SERVER}}{{localurl:${Link}}} ${Content}]</span>";
 		
-		$retv .= "<div style=\"position: absolute; left: 0px; top: ${YOffset}px; z-index: 0;\">${Content}</div>";
+		$retv = "<div style=\"position: absolute; left: 0px; top: ${YOffset}px; z-index: 0;\">${Content}</div>";
 		if($Label != null)
 		{
 			$Top = 198;
@@ -705,6 +710,8 @@ class ExtTI3WikiMapFunctions
 		$Scale = $this->args['Scale'];
 		$Format = $this->args['Format'];
 		
+    $retv = '';
+    
 		$tmp = $this->_GetLeftTop();
 		
 		if(strlen($Race) > 0)
@@ -1031,7 +1038,7 @@ class ExtTI3WikiMapFunctions
 		
 		$ScaledWidth =  $Width * $Scale;
 				
-		$retv .= $this->_mapDivHTML($Left - ($Width/2), $Top - ($Height/2), 1, "http://www.ti3wiki.org/wikimap/${Scale}/Token-${Type}.${Format}", $Scale);
+		$retv = $this->_mapDivHTML($Left - ($Width/2), $Top - ($Height/2), 1, "http://www.ti3wiki.org/wikimap/${Scale}/Token-${Type}.${Format}", $Scale);
 		
 		return $retv;
 	}
@@ -1048,7 +1055,7 @@ class ExtTI3WikiMapFunctions
 		
 		$ScaledWidth =  $Width * $Scale;
 				
-		$retv .= $this->_mapDivHTML($Left - ($Width/2), $Top - ($Height/2), 1, "http://www.ti3wiki.org/wikimap/${Scale}/Artifact-${Color}.${Format}", $Scale);
+		$retv = $this->_mapDivHTML($Left - ($Width/2), $Top - ($Height/2), 1, "http://www.ti3wiki.org/wikimap/${Scale}/Artifact-${Color}.${Format}", $Scale);
 		
 		return $retv;
 	}
@@ -1083,7 +1090,7 @@ class ExtTI3WikiMapFunctions
 	
 	private function _mapGFHTML($GF, $ST, $Color, $Left, $Top, $Scale, $Format)
 	{
-		$retv .= $this->_mapUnitHTML('GF', $GF, true, $Color, '', $Left, $Top, $Scale, $Format);
+		$retv = $this->_mapUnitHTML('GF', $GF, true, $Color, '', $Left, $Top, $Scale, $Format);
 		
 		if($ST > 0)
 		{
@@ -1117,7 +1124,7 @@ class ExtTI3WikiMapFunctions
 		
 		$Content = "http://www.ti3wiki.org/wikimap/${Scale}/Unit-${Color}-${Type}.${Format}";
 		
-		$retv .= $this->_mapDivHTML($Left - ($Width/2), $Top - ($Height/2), 2, $Content , $Scale);
+		$retv = $this->_mapDivHTML($Left - ($Width/2), $Top - ($Height/2), 2, $Content , $Scale);
 		
 		if($ShowQuantity)
 			$retv .= $this->_mapLabelHTML($Quantity, 60, $Left + ($Width/2), $Top, 2, $Scale);
@@ -1218,6 +1225,8 @@ class ExtTI3WikiMapFunctions
 		$TileImageLinks = $this->args['TileImageLinks'];
 		$HelpIncludeLinks = $this->args['HelpIncludeLinks'];
 		
+    $retv = '';
+    
 		if(!$ShowNumbers)
 		{
 			$PageExistsXYLinks = 0;
